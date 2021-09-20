@@ -15,6 +15,12 @@ class Course{
 
 var courseList = [
   Course(
+    number: 'CMSC 0000',
+    title: 'Programming III',
+    prereq: 'CMSC 1513',
+    imageURL: 'http://cs.uco.edu/files/lion.jpg',
+  ),
+  Course(
     number: 'CMSC 1613',
     title: 'Programming I',
     prereq: 'CMSC 1513',

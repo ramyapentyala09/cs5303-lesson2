@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lesson2/course.dart';
+import 'package:lesson2/viewscreen/view/webimage.dart';
 
 class CardListScreen extends StatefulWidget {
   static const routeName = '/cardListScreen';
@@ -40,9 +41,7 @@ class _CardListState extends State<CardListScreen> {
                       Text(
                         course.number, 
                         style: Theme.of(context).textTheme.headline5,),
-                      Container(
-                        height: 200.0,
-                        child: Image.network(course.imageURL)),
+                      WebImage(url: course.imageURL, context: context,),
                       Text(
                         course.title, 
                         style: Theme.of(context).textTheme.headline6,),
