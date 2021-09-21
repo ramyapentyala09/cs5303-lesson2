@@ -97,8 +97,10 @@ for (int i = selected.length - 1; i>=0; i--) {
   }
 
   void onTap(BuildContext context, int index){
+    if (selected.isEmpty)
     showDetails(context, state.widget.allCourses[index]);
-
+else
+onLongPress(context, index);
   }
   void showDetails(BuildContext context, Course course) {
     showDialog(
