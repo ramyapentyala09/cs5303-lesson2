@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lesson2/model/userecord.dart';
+import 'package:lesson2/viewscreen/userhome_screen.dart';
+import 'package:lesson2/viewscreen/view/myutil.dart';
 
 class FormDemoScreen extends StatefulWidget {
   static const routeName = '/formDemoScreen';
@@ -26,6 +29,7 @@ class _FormDemoState extends State<FormDemoScreen> {
        key: formKey,
        child: Column(
          children: [
+           Text('Sign In, Please!', style: Theme.of(context).textTheme.headline5,),
 TextFormField(
   decoration: InputDecoration(
     icon: Icon(Icons.email),
@@ -33,6 +37,8 @@ TextFormField(
   ),
   keyboardType: TextInputType.emailAddress,
   autocorrect: false,
+  validator: con.validateEmail,
+  onSaved: con.saveEmail,
   ),
   TextFormField(
     decoration: InputDecoration(
@@ -41,7 +47,14 @@ TextFormField(
     ),
     obscureText: true,
     autocorrect: false,
+    validator: con.validatePassword,
+    onSaved: con.savePassword,
   ),
+  ElevatedButton(
+    onPressed: con.signIn,
+    child: Text('Submit'),
+    )
+  
          ],
        ),
        ),
@@ -51,6 +64,54 @@ TextFormField(
 class _Controller {
   late _FormDemoState state;
   _Controller(this.state);
+  String? email;
+  String? password;
+
+  void signIn() {
+    FormState? currentState = state.formKey.currentState;
+    if (currentState == null) return;
+    if (currentState.validate()) return;
+    currentState.save();
+    
+
+    UserRecord user = UserRecord.fakeDB.firstWhere(
+(e) => e.email == email && e.password == password,
+orElse: () => UserRecord(),
+
+    );
+    if(user.email == ''){
+      MyUtil.showSnackBar(
+        context: state.context,
+        message: 'Incorrect email/password',
+      );
+
+    } else {
+      Navigator.pushNamed(
+        state.context, 
+        UserHomeScreen.routeName,
+        arguments: user,
+        );
+    }
+
+  }
+  String? validateEmail(String? value) {
+    if (value == null || (value.contains('@') && value.contains('.')))
+    return 'Invalid Email';
+    else 
+    return null;
+  }
+  String? validatePassword(String? value) {
+    if (value == null || value.length < 6)
+    return 'Invalid Password';
+    else
+    return null;
+  }
+  void saveEmail(String? value) {
+email = value;
+  }
+  void savePassword(String? value){
+    password = value;
+  }
 }
  
   
