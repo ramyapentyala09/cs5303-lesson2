@@ -3,8 +3,11 @@ import 'package:lesson2/model/userecord.dart';
 
 class ProfileScreen extends  StatefulWidget {
   static const routeName = '/profileScreen';
-  late final UserRecord userRecord;
-  ProfileScreen(this.userRecord);
+  late final UserRecord userRecordOriginal;
+  late final UserRecord userRecord; //copy
+  ProfileScreen(this.userRecordOriginal) {
+    userRecord = userRecordOriginal.clone();
+  }
   @override
   State<StatefulWidget> createState() {
    return _ProfileState();
@@ -35,110 +38,147 @@ actions: [
       body: Form(
         key: formKey,
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                children: [
-              Expanded(
-                flex: 1,
-                child: Text(
-                  'Name', 
-                  style: Theme.of(context).textTheme.headline6,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    'Name', 
+                    style: Theme.of(context).textTheme.headline6,
+                    ),
+                ),
+                Expanded(
+                  flex: 4,
+                child: TextFormField(
+                  enabled: editMode,
+                  initialValue: widget.userRecord.name,
+                  validator: con.validateName,
+                  onSaved: con.saveName,
+                ),
+                ),
+                  ],
+                ),
+                Row(
+                  children: [
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    'Phone', 
+                    style: Theme.of(context).textTheme.headline6,
+                    ),
+                ),
+                Expanded(
+                  flex: 4,
+                child: TextFormField(
+                  enabled: editMode,
+                  initialValue: widget.userRecord.phone,
+                  validator: con.validatePhone,
+                  onSaved: con.savePhone,
+                ),
+                ),
+                  ],
+                ),
+                Row(
+                  children: [
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    'Age', 
+                    style: Theme.of(context).textTheme.headline6,
+                    ),
+                ),
+                Expanded(
+                  flex: 4,
+                child: TextFormField(
+                  enabled: editMode,
+                  initialValue: widget.userRecord.age.toString(),
+                  validator: con.validateAge,
+                  onSaved: con.saveAge,
+                ),
+                ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20.0,
                   ),
-              ),
-              Expanded(
-                flex: 4,
-              child: TextFormField(
-                enabled: editMode,
-                initialValue: widget.userRecord.name,
-                validator: con.validateName,
-                onSaved: con.saveName,
-              ),
-              ),
-                ],
-              ),
-              Row(
-                children: [
-              Expanded(
-                flex: 1,
-                child: Text(
-                  'Phone', 
-                  style: Theme.of(context).textTheme.headline6,
-                  ),
-              ),
-              Expanded(
-                flex: 4,
-              child: TextFormField(
-                enabled: editMode,
-                initialValue: widget.userRecord.phone,
-                validator: con.validatePhone,
-                onSaved: con.savePhone,
-              ),
-              ),
-                ],
-              ),
-              Row(
-                children: [
-              Expanded(
-                flex: 1,
-                child: Text(
-                  'Age', 
-                  style: Theme.of(context).textTheme.headline6,
-                  ),
-              ),
-              Expanded(
-                flex: 4,
-              child: TextFormField(
-                enabled: editMode,
-                initialValue: widget.userRecord.age.toString(),
-                validator: con.validateAge,
-                onSaved: con.saveAge,
-              ),
-              ),
-                ],
-              ),
-              SizedBox(height: 20.0,),
-              Text('Classification', 
-              style: Theme.of(context).textTheme.headline6,
-              ),
-DropdownButtonFormField(
-  value: widget.userRecord.classification,
-  onChanged: editMode ? con.onChangedClassification : null,
-  items: [
-    for (var c in Classification.values)
-    DropdownMenuItem<Classification>(
-      child: Text(c.toString().split('.')[1]),
-      value: c,
-      )
-  ],
-  ),
+                Text(
+                  'Classification', 
+                style: Theme.of(context).textTheme.headline6,
+                ),
+Container(
+  decoration: BoxDecoration(
+    color: Colors.blue[100],
+    border: Border.all(
+      color: Colors.blue[800]!,
+      width: 2.0
+    ),
+    ),
+  child:   DropdownButtonFormField(
+  
+    value: widget.userRecord.classification,
+  
+    onChanged: editMode ? con.onChangedClassification : null,
+  
+    items: [
+  
+      for (var c in Classification.values)
+  
+      DropdownMenuItem<Classification>(
+  
+        child: Text(c.toString().split('.')[1]),
+  
+        value: c,
+  
+        )
+  
+    ],
+  
+    ),
+),
   SizedBox(height: 20.0,),
   Text('Major', style: Theme.of(context).textTheme.headline6,),
-  Column(
-    children: [
-      for (var m in Major.values)
-RadioListTile<Major>(
-  title: Text(m.toString().split('.')[1]),
-  value: m,
-  groupValue: widget.userRecord.major,
-  onChanged: editMode ? con.onChangedMajor : null,
-)
-    ],
+  Container(
+    decoration: BoxDecoration(color: Colors.blue[100],
+    border: Border.all(color: Colors.blue[800]!,
     ),
+    ),
+    child: Column(
+      children: [
+        for (var m in Major.values)
+RadioListTile<Major>(
+    title: Text(m.toString().split('.')[1]),
+    value: m,
+    groupValue: widget.userRecord.major,
+    onChanged: editMode ? con.onChangedMajor : null,
+)
+      ],
+      ),
+  ),
     SizedBox(height: 20.0),
     Text('Language proficiency', style: Theme.of(context).textTheme.headline6,),
-    Column(
-      children: [
-        for (var v in Language.values)
-        CheckboxListTile(
-          value: widget.userRecord.languages[v],
-          title: Text(v.toString().split('.')[1]),
-          onChanged: editMode ? (value) => con.onChnagedLanguage(value, v) : null,
-        )
-      ],
-      ), 
-            ],
-            ),
+    Container(
+      decoration: BoxDecoration(color: Colors.blue[100],
+      border: Border.all(color: Colors.blue[800]!,
+      ),
+      ),
+      child: Column(
+        children: [
+          for (var v in Language.values)
+          CheckboxListTile(
+              value: widget.userRecord.languages[v],
+              title: Text(v.toString().split('.')[1]),
+              onChanged: editMode ? (value) => con.onChnagedLanguage(value, v) : null,
+          )
+        ],
+        ),
+    ), 
+              ],
+              ),
+          ),
         ),
       ),
       );
@@ -152,6 +192,7 @@ class _Controller {
     FormState? currentState = state.formKey.currentState;
     if (currentState == null || !currentState.validate()) return;
     currentState.save();
+    state.widget.userRecordOriginal.copyFrom(state.widget.userRecord);
 state.render(() => state.editMode = false);
   }
   void edit() {

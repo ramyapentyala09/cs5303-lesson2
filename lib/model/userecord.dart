@@ -30,6 +30,29 @@ class UserRecord {
     languages = {};
     Language.values.forEach((e) => languages[e] = false);
   }
+
+  UserRecord clone() {
+    var copy = UserRecord(
+      email: this.email,
+    password: this.password,
+    name: this.name,
+    phone: this.phone,
+    age: this.age,
+    classification: this.classification,
+    major: this.major,
+    );
+    copy.languages = {...this.languages};
+    return copy;
+  }
+  void copyFrom(UserRecord obj) {
+    this.email = obj.email;
+    this.password = obj.password;
+    this.phone = obj.phone;
+    this.age = obj.age;
+    this.classification = obj.classification;
+    this.major = obj.major;
+    this.languages = {...obj.languages};
+  }
   static List<UserRecord> fakeDB = [
     UserRecord(
       email: '1@test.com',
