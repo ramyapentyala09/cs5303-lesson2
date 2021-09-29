@@ -70,7 +70,7 @@ class _Controller {
   void signIn() {
     FormState? currentState = state.formKey.currentState;
     if (currentState == null) return;
-    if (currentState.validate()) return;
+    if (!currentState.validate()) return;
     currentState.save();
     
 
@@ -95,7 +95,7 @@ orElse: () => UserRecord(),
 
   }
   String? validateEmail(String? value) {
-    if (value == null || (value.contains('@') && value.contains('.')))
+    if (value == null || !(value.contains('@') && value.contains('.')))
     return 'Invalid Email';
     else 
     return null;
