@@ -48,6 +48,7 @@ class UserRecord {
     this.email = obj.email;
     this.password = obj.password;
     this.phone = obj.phone;
+    this.name = obj.name;
     this.age = obj.age;
     this.classification = obj.classification;
     this.major = obj.major;
